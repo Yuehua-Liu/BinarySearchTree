@@ -74,6 +74,43 @@ class Node:
             return self.right_node.count_internal_num(internal_num)
         return internal_num
 
+    # 計算樹的 height
+
+
+    # Preorder
+    def preorder(self, order_list):
+        order_list.append(self.val)
+
+        if self.left_node:
+            return self.left_node.inorder(order_list)
+
+        if self.right_node:
+            return self.right_node.inorder(order_list)
+        return order_list
+
+    # Inorder
+    def inorder(self, order_list):
+        if self.left_node:
+            return self.left_node.inorder(order_list)
+
+        order_list.append(self.val)
+
+        if self.right_node:
+            return self.right_node.inorder(order_list)
+        return order_list
+
+    # Postorder
+    def order(self, order_list):
+        if self.left_node:
+            return self.left_node.inorder(order_list)
+
+        if self.right_node:
+            return self.right_node.inorder(order_list)
+
+        order_list.append(self.val)
+        return order_list
+
+
 # Create Tree class
 class Tree:
     # 初始化
@@ -127,4 +164,28 @@ class Tree:
 
     # 計算樹的高
     def count_height(self):
-        
+
+
+    # Preorder
+    def preorder(self):
+        list = []
+        if self.root:
+            print('Preorder：' + self.root.preorder(list))
+        else:
+            return False
+
+    # Inorder
+    def inorder(self):
+        list = []
+        if self.root:
+            print('Inorder：' + self.root.inorder(list))
+        else:
+            return False
+
+    # Postorder
+    def postorder(self):
+        list = []
+        if self.root:
+            print('Postorder：' + self.root.postorder(list))
+        else:
+            return False
