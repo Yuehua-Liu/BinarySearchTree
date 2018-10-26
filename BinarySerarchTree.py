@@ -77,7 +77,7 @@ class Node:
     # 計算樹的 height
 
 
-    # Preorder
+    # Pre-order
     def preorder(self, order_list):
         order_list.append(self.val)
 
@@ -88,7 +88,7 @@ class Node:
             return self.right_node.inorder(order_list)
         return order_list
 
-    # Inorder
+    # In-order
     def inorder(self, order_list):
         if self.left_node:
             return self.left_node.inorder(order_list)
@@ -99,7 +99,7 @@ class Node:
             return self.right_node.inorder(order_list)
         return order_list
 
-    # Postorder
+    # Post-order
     def order(self, order_list):
         if self.left_node:
             return self.left_node.inorder(order_list)
@@ -110,6 +110,15 @@ class Node:
         order_list.append(self.val)
         return order_list
 
+    # Show mirror
+    def mirror(self):
+        if self.left_node:
+            return self.left_node.mirror()
+        if self.right_node:
+            return self.right_node.mirror()
+        temp = self.left_node
+        self.left_node = self.right_node
+        self.right_node = temp
 
 # Create Tree class
 class Tree:
@@ -117,7 +126,7 @@ class Tree:
     def __init__(self):
         self.root = None
 
-    # 插入新值
+    # 插入新值 insert
     def insert(self, data):
         if self.root:
             return self.root.insert(data)
@@ -132,14 +141,14 @@ class Tree:
         else:
             return False
 
-    # 找最大
+    # 找最大 find the max num
     def find_max(self):
         if self.root:
             return self.root.print_max()
         else:
             return False
 
-    # 找最小
+    # 找最小 find the min num
     def find_min(self):
         if self.root:
             return self.root.print_min()
@@ -166,26 +175,48 @@ class Tree:
     def count_height(self):
 
 
-    # Preorder
+    # Pre-order
     def preorder(self):
-        list = []
+        order_list = []
         if self.root:
-            print('Preorder：' + self.root.preorder(list))
+            print('Pre-order：' + self.root.preorder(order_list))
         else:
             return False
 
-    # Inorder
+    # In-order
     def inorder(self):
-        list = []
+        order_list = []
         if self.root:
-            print('Inorder：' + self.root.inorder(list))
+            print('In-order：' + self.root.inorder(order_list))
         else:
             return False
 
-    # Postorder
+    # Post-order
     def postorder(self):
-        list = []
+        order_list = []
         if self.root:
-            print('Postorder：' + self.root.postorder(list))
+            print('Post-order：' + self.root.postorder(order_list))
         else:
             return False
+
+
+    # Show mirror
+    def mirror(self):
+        if self.root:
+            tree_mirror = self
+            tree_mirror.root.mirror()
+            print('Mirror in post-order：', tree_mirror.postorder())
+        else:
+            return False
+
+    # Delete num
+    def delete(self, del_val):
+        if self.root:
+            # step 1: 檢查值是否存在
+            if not self.root.find(del_val):
+                return print('The number you wanna delete is not exit!')
+            # step 2: 下面這些步驟是否該寫在這個Class還要再思考一下
+
+            # step 3:
+
+            # step 4:
