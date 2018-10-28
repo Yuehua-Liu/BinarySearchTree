@@ -120,6 +120,28 @@ class Node:
         self.left_node = self.right_node
         self.right_node = temp
 
+    # Delete
+    def delete(self, del_val):
+
+        if self.val == del_val:
+        # case_1 : 刪除的值沒有任何child
+            if self.left_node is None and self.right_node is None:
+                self = None
+        # case_2-1 : 刪除的值有一個child(left)
+            if self.left_node is not None and self.right_node is None:
+                self = self.left_node
+        # case_2-2 : 刪除的值有一個child(right)
+            if self.left_node is None and self.right_node is not None:
+                self = self.right_node
+        # case_3 : 刪除的值有兩個child (未完成)
+            if self.left_node is not None and self.right_node is not None:
+                
+        elif self.val > del_val:
+            return self.left_node.delete(del_val)
+        else:
+            return self.right_node.delete(del_val)
+
+
 # Create Tree class
 class Tree:
     # 初始化
@@ -215,8 +237,7 @@ class Tree:
             # step 1: 檢查值是否存在
             if not self.root.find(del_val):
                 return print('The number you wanna delete is not exit!')
-            # step 2: 下面這些步驟是否該寫在這個Class還要再思考一下
-
-            # step 3:
-
-            # step 4:
+            # step 2: 確認值存在，則進行刪除
+            else:
+                self.root.delete(del_val)
+                return
