@@ -135,57 +135,61 @@ class Node:
         self.left_node = self.right_node
         self.right_node = temp
 
-    # Delete
-    def delete(self, del_val):
+    # Delete(OK)
+    def delete(self, del_val, check_num):
         if self.val == del_val:
             # case_1 : 刪除的值沒有任何child
             if self.left_node is None and self.right_node is None:
                 self = None
             # case_2-1 : 刪除的值有一個child(left)
-            if self.left_node and self.right_node is None:
+            elif self.right_node is None and self.left_node:
                 self = self.left_node
             # case_2-2 : 刪除的值有一個child(right)
-            if self.left_node is None and self.right_node:
+            elif self.left_node is None and self.right_node:
                 self = self.right_node
             # case 3 : 刪除的值有兩個children
-            if self.left_node and self.right_node:
+            elif self.left_node and self.right_node:
                 # 作法一:把左邊最大放上來
-                parent_node = self
-                target_node = self.left_node
-                while target_node.right_node:
-                    parent_node = target_node
-                    target_node = target_node.right_node
-                self.val = target_node.val
-                parent_node.right_node = None
+                if check_num == 1:
+                    target_parent_node = self
+                    target_node = self.left_node
+                    while target_node.right_node:
+                        target_parent_node = target_node
+                        target_node = target_node.right_node
+                    self.val = target_node.val
+                    # self.left_node.delete(target_node.val)
+                    # 把換過來的原node刪除
+                    if target_node.left_node:
+                        if target_parent_node.val < target_node.left_node.val:
+                            target_parent_node.right_node = target_node.left_node
+                        else:
+                            target_parent_node.left_node = target_node.left_node
+                    else:
+                        target_parent_node.right_node = None
 
                 # 作法二:把右邊最小放上來
-
+                elif check_num == 2:
+                    target_parent_node = self
+                    target_node = self.right_node
+                    while target_node.left_node:
+                        target_parent_node = target_node
+                        target_node = target_node.left_node
+                    self.val = target_node.val
+                    # self.left_node.delete(target_node.val)
+                    # 把換過來的原node刪除
+                    if target_node.right_node:
+                        if target_parent_node.val < target_node.right_node.val:
+                            target_parent_node.right_node = target_node.right_node
+                        else:
+                            target_parent_node.left_node = target_node.right_node
+                    else:
+                        target_parent_node.right_node = None
 
         # 如果該node不是要刪除的值，跳下一個
         elif self.val > del_val:
-            self.left_node.delete(del_val)
-        else:
-            self.right_node.delete(del_val)
-        return
-
-    #     if self.val == del_val:
-    #         # case_1 : 刪除的值沒有任何child
-    #         if self.left_node is None and self.right_node is None:
-    #             self = None
-    #         # case_2-1 : 刪除的值有一個child(left)
-    #         if self.left_node and self.right_node is None:
-    #             self = self.left_node
-    #         # case_2-2 : 刪除的值有一個child(right)
-    #         if self.left_node is None and self.right_node:
-    #             self = self.right_node
-    #         # case_3 : 刪除的值有兩個child (未完成)
-    #         if self.left_node and self.right_node:
-    #
-    #     # 如果該node不是要刪除的值，跳下一個
-    #     elif self.val > del_val:
-    #         return self.left_node.delete(del_val)
-    #     else:
-    #         return self.right_node.delete(del_val)
+            self.left_node.delete(del_val, check_num)
+        elif self.val < del_val:
+            self.right_node.delete(del_val, check_num)
 
 
 # Create Tree class
@@ -279,64 +283,27 @@ class Tree:
         else:
             return False
 
-    # Delete num
+    # Delete num(OK)
     def delete(self, del_val):
         if self.root:
             # step 1: 檢查值是否存在
             if not self.root.find(del_val):
-                return print('The number you wanna delete is not exit!')
+                return False
             # step 2: 確認值存在，則進行刪除
             else:
-                self.root.delete(del_val)
-                # 下面為寫錯的code:
-#                 if self.root.val == del_val:
-#                     # case_1 : 刪除的值沒有任何child
-#                     if self.root.left_node is None and self.root.right_node is None:
-#                         self.root = None
-#                         return print(self.preorder() + '\n' + self.preorder())
-#                     # case_2-1 : 刪除的值有一個child(left)
-#                     if self.root.left_node and self.root.right_node is None:
-#                         self.root = self.root.left_node
-#                         return print(self.preorder() + '\n' + self.preorder())
-#                     # case_2-2 : 刪除的值有一個child(right)
-#                     if self.root.left_node is None and self.root.right_node:
-#                         self.root = self.root.right_node
-#                         return print(self.preorder() + '\n' + self.preorder())
-# # **********************************************************************************************
-#                     # case_3 : 刪除的值有兩個child (未完成)
-#                     if self.root.left_node and self.root.right_node:
-#                         clone_tree = self
-#                         # 結果一變數設定:
-#                         del_nodeparent_1 = self.root
-#                         del_node_1 = self.root.left_node
-#                         # 結果二變數設定:
-#                         del_nodeparent_2 = clone_tree.root
-#                         del_node_2 = clone_tree.root.right_node
-#
-#                         # 處理結果一:
-#                         while del_node_1:
-#                             del_nodeparent_1 = del_node_1
-#                             del_node_1 = del_node_1.right_node
-#                         self.root.val = del_nodeparent_1.val
-#                         # 最後一個數值要變None
-#                         del_nodeparent_1.right_node = None
-#
-#                         # 處理結果二:
-#                         while del_node_2:
-#                             del_nodeparent_2 = del_node_2
-#                             del_node_2 = del_node_2.left_node
-#                         clone_tree.root.val = del_nodeparent_2.val
-#                         # 最後一個數值要變None
-#                         del_nodeparent_2.left_node = None
-#
-#                         # 印出兩種可能結果:
-#                         return print(self.preorder() + '\n' + clone_tree.preorder())
-#
-#                 # 如果該node不是要刪除的值，跳下一個
-#                 elif self.root.val > del_val:
-#                     return self.root.left_node.delete(del_val)  # 這邊轉換可能有問題***********************
-#                 else:
-#                     return self.root.right_node.delete(del_val)
+                # 複製一個樹，拿來ｐｒｉｎｔ第二個結果用
+                clone_tree = Tree()
+                for data in node_val:
+                    clone_tree.insert(int(data))
+                clone_tree.insert(num_X)
+                # 進行刪除
+                self.root.delete(del_val, 1)
+                self.preorder()
+
+                clone_tree.root.delete(del_val, 2)
+                clone_tree.preorder()
+
+
 # ***********************************************************************************************
 
 
@@ -377,5 +344,5 @@ print(new_tree.find_max())
 # output_8:印出樹中最小值(OK)
 print(new_tree.find_min())
 
-# output_9:刪除一個數 Y 後, 印出兩種答案的 pre-order traversal (先印出左子樹最大再印出右子樹最小，如果只有一種答案則答案印兩次)
+# output_9:刪除一個數 Y 後, 印出兩種答案的 pre-order traversal (先印出左子樹最大再印出右子樹最小，如果只有一種答案則答案印兩次)(OK)
 new_tree.delete(int(num_Y))
